@@ -194,9 +194,15 @@ The output should look like this:
 failregex = ^<HOST> -.*"(GET|POST).*
 ignoreregex =
 ```
-
-
-
+Let's reload the `firewall` and restart our `fail2ban` service:
+```sh
+sudo ufw reload
+sudo service fail2ban restart
+```
+Now we can check the status of `fail2ban`:
+```sh
+sudo fail2ban-client status
+```
 
 
 
