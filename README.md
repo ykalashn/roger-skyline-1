@@ -129,7 +129,7 @@ Restart the SSH daemon:
 ```
 sudo service sshd restart
 ```
-### 5. Set the rules for firewall
+### 5. Set the rules for [firewall](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-debian-9)
 Install and enable `UFW` (Uncomplicated Firewall):
 ```
 sudo apt-get install ufw
@@ -139,19 +139,21 @@ To check the list of all services, enter:
 ```
 less /etc/services
 ```
+To set the defaults used by UFW, use these commands:
+```
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+```
 To allow `ssh`, `http`, and `https` use these commands:
 ```
 sudo ufw allow 45678/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 ```
-You can check status of the firewall by entering
+You can check status of the firewall by entering:
 ```
 sudo ufw status
 ```
-
-
-
 
 
 
