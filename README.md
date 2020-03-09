@@ -70,7 +70,7 @@ Create a new network configuration file with any arbitrary file name eg. `enp0s3
 # cat /etc/network/interfaces.d/enp0s3
 iface enp0s3 inet static
       address 10.12.180.52
-      netmask 255.255.255.252       // Netmask in \30
+      netmask 255.255.255.252       # Netmask in \30
       gateway 10.12.254.254
  ```
  Now you can see result by first `restarting the network service`, and then running command `ip a`:
@@ -80,7 +80,7 @@ iface enp0s3 inet static
  ```
 ### 4. Change the default port of the SSH service, SSH access has to be done with publickeys. SSH root access should not be aloved directly
 
-#### Let's change our default port
+#### Change our default port
 Edit `/etc/ssh/sshd_config` file:
 ```sh
 sudo vim /etc/ssh/sshd_config
