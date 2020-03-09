@@ -183,9 +183,17 @@ findtime = 300
 bantime = 600
 action = iptables[name=HTTP, port=http, protocol=tcp]
 ```
-
-
-
+Now we need to create a filter:
+```
+sudo vi /etc/fail2ban/filter.d/http-get-dos.conf
+```
+The output should look like this:
+```sh
+# cat /etc/fail2ban/filter.d/http-get-dos.conf
+[Definition]
+failregex = ^<HOST> -.*"(GET|POST).*
+ignoreregex =
+```
 
 
 
