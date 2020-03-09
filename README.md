@@ -38,8 +38,8 @@ su - ykalashn
 ```sh
 sudo whoami
 ```
-If the user has sudo access then the output of the `whoami` command will be 
-`root`.
+_If the user has sudo access then the output of the `whoami` command will be 
+`root`._
 ### 3. Create a [static IP](https://linuxconfig.org/how-to-setup-a-static-ip-address-on-debian-linux) and a [Netmask in \30](https://www.aelius.com/njh/subnet_sheet.html)
 - In VirtualBox go to `Settings` > `Network` > `Attached to:` and choose `Bridged Adapter`.
 
@@ -47,7 +47,8 @@ If the user has sudo access then the output of the `whoami` command will be
 ```sh
 sudo apt-get install vim
 ``` 
-By default, you will find the following configuration within the `/etc/network/interfaces` network config file. - ---
+By default, you will find the following configuration within the `/etc/network/interfaces` network config file.
+
 - Update the `# The primary network interface`:
 ```diff
 source /etc/network/interfaces.d/*
@@ -74,7 +75,7 @@ iface enp0s3 inet static
       netmask 255.255.255.252       # Netmask in \30
       gateway 10.12.254.254
  ```
- Now you can see result by first `restarting the network service`, and then running command `ip a`:
+ _Now you can see result by first `restarting the network service`, and then running command `ip a`:_
 ```sh
  sudo service networking restart
  ip a
@@ -149,7 +150,7 @@ sudo ufw allow 45678/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 ```
-You can check status of the firewall by entering:
+_You can check status of the firewall by entering:_
 ```sh
 sudo ufw status
 ```
@@ -188,7 +189,7 @@ action = iptables[name=HTTP, port=http, protocol=tcp]
 ```
 sudo vi /etc/fail2ban/filter.d/http-get-dos.conf
 ```
-The output should look like this:
+_The output should look like this:_
 ```sh
 # cat /etc/fail2ban/filter.d/http-get-dos.conf
 [Definition]
@@ -200,7 +201,7 @@ ignoreregex =
 sudo ufw reload
 sudo service fail2ban restart
 ```
-Now we can check the status of `fail2ban`:
+_Now we can check the status of `fail2ban`:_
 ```sh
 sudo fail2ban-client status
 ```
