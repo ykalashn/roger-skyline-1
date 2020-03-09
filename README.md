@@ -87,24 +87,24 @@ iface enp0s3 inet static
  sudo service networking restart
  ip a
  ```
-### 4. Change the default port of the SSH service
+### 4. Change the default port of the SSH service, SSH access has to be done with publickeys. SSH root access should not be aloved directly
 
-**First, let's change our default port**
-1. Edit `/etc/ssh/sshd_config` file:
+**Let's change our default port**
+- Edit `/etc/ssh/sshd_config` file:
 ```
 sudo vim /etc/ssh/sshd_config
 ```
-2. Update the line `# Port 22` by removing `#` and typing a new port number:
+- Update the line `# Port 22` by removing `#` and typing a new port number:
 ```
 Port 45678
 ```
 > :point_up: Make sure you choose a random port, preferably higher than **1024** (the superior limit of standard well-known ports). The maximum port that can be setup for for SSH is **65535/TCP**.
 
-3. Save the file, and restart the **sshd service**:
+- Save the file, and restart the **sshd service**:
 ```
 sudo service sshd restart
 ```
-4. Now, try to log in with your **ssh**:
+- Now, try to log in with your **ssh**:
 ```
 ssh ykalashn@10.12.180.52 -p 45678
 ```
@@ -118,11 +118,20 @@ ssh-keygen
 ```
 ssh-copy-id ykalashn@10.12.180.52 -p 45678
 ```
-- On your VM, edit the `/etc/ssh/sshd_config/` file:
+To disable root SSH login, edit `/etc/ssh/sshd_config` file on your VM.
+```
+sudo vi /etc/ssh/sshd_config
+```
+Change the line `# PermitRootLogin yes` to `PermitRootLogin no`. 
 
-
-
-
+Restart the SSH daemon: 
+```
+sudo service sshd restart
+```
+- We On your VM, edit the `/etc/ssh/sshd_config/` file:
+```
+sudo vi /etc/ssh/sshd_config
+```
 
 
 
