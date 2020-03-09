@@ -17,7 +17,7 @@
 ### 1. Creating a non-root user to connect to the machine and work
 The user was created when we set up the VM. Enter login and password to log in.
 ### 2. Using sudo with created user to perform operation requiring special rights
-**1. Install `sudo`:**
+**1. Install `sudo`**
 ```
 su
 apt-get update
@@ -87,7 +87,23 @@ iface enp0s3 inet static
  sudo service networking restart
  ip a
  ```
-
+### 4. Change the default port of the SSH service
+We need to edit `/etc/ssh/sshd_config` file
+```
+sudo vim /etc/ssh/sshd_config
+```
+Update the line `# Port 22` by removing `#` and typing a new port number:
+```
+Port 45678
+```
+Save the file, and restart the sshd service:
+```
+sudo service sshd restart
+```
+Now, try to log in with your ssh:
+```
+ssh ykalashn@10.12.180.52 -p 45678
+```
 
 
 
