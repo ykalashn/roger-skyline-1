@@ -37,7 +37,7 @@ Use the sudo command to run the whoami command:
 ```
 sudo whoami
 ```
-> If the user has sudo access then the output of the `whoami` command will be 
+If the user has sudo access then the output of the `whoami` command will be 
 `root`.
 ### 3. Create a static IP and a Netmask in \30
 In VirtualBox go to `Settings` > `Network` > `Attached to:` and choose `Bridged Adapter`.
@@ -88,7 +88,7 @@ iface enp0s3 inet static
  ip a
  ```
 ### 4. Change the default port of the SSH service
-We need to edit `/etc/ssh/sshd_config` file
+We need to edit `/etc/ssh/sshd_config` file:
 ```
 sudo vim /etc/ssh/sshd_config
 ```
@@ -96,6 +96,8 @@ Update the line `# Port 22` by removing `#` and typing a new port number:
 ```
 Port 45678
 ```
+> Make sure you choose a random port, preferably higher than 1024 (the superior limit of standard well-known ports). The maximum port that can be setup for for SSH is 65535/TCP.
+
 Save the file, and restart the sshd service:
 ```
 sudo service sshd restart
