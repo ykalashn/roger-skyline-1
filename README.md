@@ -114,8 +114,15 @@ To disable root SSH login, edit `/etc/ssh/sshd_config` file on your VM.
 ```sh
 sudo vi /etc/ssh/sshd_config
 ```
-Change the line `#PermitRootLogin` to `PermitRootLogin no`, `#PubkeyAuthentication` to `PubkeyAuthentication yes`, and `#PasswordAuthentication` to `PasswordAuthentication no`. 
-
+Change the following lines:
+```diff
+- #PermitRootLogin
+- #PubkeyAuthentication
+- #PasswordAuthentication
++ PermitRootLogin
++ PubkeyAuthentication yes
++ PasswordAuthentication no
+```
 Restart the SSH daemon: 
 ```sh
 sudo service sshd restart
@@ -155,7 +162,7 @@ Copy `jail.conf` into `jail.local`:
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 ```
 Now we need to edit the `/etc/fail2ban/jail.conf` file, the `JAILS` part inside the file should look like this:
-```
+```sh
 [sshd]
 enabled = true
 port    = ssh 
@@ -165,7 +172,7 @@ maxretry = 3
 bantime = 600
 ```
 After `HTTP servers`, add:
-```
+```sh
 [http-get-dos]
 enabled = true
 port = http,https
