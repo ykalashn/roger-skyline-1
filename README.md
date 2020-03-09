@@ -16,7 +16,7 @@
 # Network and Security Part
 ### 1. Creating a non-root user to connect to the machine and work
 The user was created when we set up the VM. Enter login and password to log in.
-### 2. Using sudo with created user to perform operation requiring special rights
+### 2. [Using `sudo` with created user to perform operation requiring special rights](https://hostadvice.com/how-to/how-to-create-a-non-root-user-on-ubuntu-18-04-server/)
 **1. Install `sudo`**
 ```
 su
