@@ -58,7 +58,7 @@ iface lo inet loopback
 allow-hotplug eth0
 iface eth0 inet dhcp
 ```
-Update the `iface enp0s3 inet dhcp` to `iface enp0s3 inet static`. The resulting content of `/etc/network/interfaces` network config file should look similar to the one below:
+Update the `# The primary network interface`. The resulting content of `/etc/network/interfaces` network config file should look similar to the one below:
 ```
 source /etc/network/interfaces.d/*
 
@@ -67,12 +67,9 @@ auto lo
 iface lo inet loopback
 
 # The primary network interface
-allow-hotplug enp0s3
-iface enp0s3 inet static
+auto enp0s3
 ```
-
-
-
+ 
 
 
 
