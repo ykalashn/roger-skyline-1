@@ -122,12 +122,19 @@ ssh-copy-id ykalashn@10.12.180.52 -p 45678
 ```
 sudo vi /etc/ssh/sshd_config
 ```
-- Change the line `#PermitRootLogin` to `PermitRootLogin no`, and change `#PasswordAuthentication` to `PasswordAuthentication no`. 
+- Change the line `#PermitRootLogin` to `PermitRootLogin no`, and `#PasswordAuthentication` to `PasswordAuthentication no`. 
 
 - Restart the SSH daemon: 
 ```
 sudo service sshd restart
 ```
+### 5. Set the rules for firewall
+- Install and enable `UFW` (Uncomplicated Firewall)
+```
+sudo apt-get install ufw
+sudo ufw enable
+```
+
 
 
 
