@@ -1,7 +1,7 @@
 ![Hive Helsinki](https://miro.medium.com/max/3200/1*IszpKRN_x7RbKDClj6oqhQ.png)
 
 # VM Part
-**The properties of VM:**
+#### The properties of VM:
 - [x] hypervisor: VirtualBox; 
 - [x] Linux OS: Debian (64-bit);
 - [x] RAM size: 2048 MB;
@@ -10,7 +10,7 @@
 - [x] partitioning method: manual;
 - [x] 4.2 GB partition (set to 4.5 GB during installation).
 
-**Installed software:**
+#### Installed software:
 - [x] SSH server;
 - [x] standart system utilities.
 # Network and Security Part
@@ -18,17 +18,17 @@
 The user was created when we set up the VM. Enter login and password to log in.
 ### 2. [Using `sudo` with created user](https://hostadvice.com/how-to/how-to-create-a-non-root-user-on-ubuntu-18-04-server/) to perform operation requiring special rights
 
-**1. Install `sudo`**
+#### Install `sudo`**
 ```sh
 su
 apt-get update
 apt-get install sudo
 ```
-**2. Add the non-root user to the `sudo` group**
+#### Add the non-root user to the `sudo` group**
 ```sh
 sudo usermod -aG sudo ykalashn
 ```
-**3. Test the `sudo` access**
+#### Test the `sudo` access**
 
 Switch to the newly created user:
 ```sh
@@ -80,7 +80,7 @@ iface enp0s3 inet static
  ```
 ### 4. Change the default port of the SSH service, SSH access has to be done with publickeys. SSH root access should not be aloved directly
 
-**Let's change our default port**
+#### Let's change our default port
 Edit `/etc/ssh/sshd_config` file:
 ```sh
 sudo vim /etc/ssh/sshd_config
@@ -100,7 +100,7 @@ Now, try to log in with your **ssh**:
 ```sh
 ssh ykalashn@10.12.180.52 -p 45678
 ```
-**Let's create `SSH publickey`.**
+#### Let's create `SSH publickey`.
 
 Run from your **host terminal** and then set a **passphrase**:
 ```sh
