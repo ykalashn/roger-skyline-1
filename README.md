@@ -88,24 +88,38 @@ iface enp0s3 inet static
  ip a
  ```
 ### 4. Change the default port of the SSH service
-We need to edit `/etc/ssh/sshd_config` file:
+
+**First, let's change our default port**
+1. Edit `/etc/ssh/sshd_config` file:
 ```
 sudo vim /etc/ssh/sshd_config
 ```
-Update the line `# Port 22` by removing `#` and typing a new port number:
+2. Update the line `# Port 22` by removing `#` and typing a new port number:
 ```
 Port 45678
 ```
 > :point_up: Make sure you choose a random port, preferably higher than **1024** (the superior limit of standard well-known ports). The maximum port that can be setup for for SSH is **65535/TCP**.
 
-Save the file, and restart the **sshd service**:
+3. Save the file, and restart the **sshd service**:
 ```
 sudo service sshd restart
 ```
-Now, try to log in with your **ssh**:
+4. Now, try to log in with your **ssh**:
 ```
 ssh ykalashn@10.12.180.52 -p 45678
 ```
+**Let's create `SSH publickey`.**
+
+- Run from your **host terminal** and then set a **passphrase**:
+```
+ssh-keygen
+```
+- Copy the publickey to VM:
+```
+ssh-copy-id ykalashn@10.12.180.52 -p 45678
+```
+- On your VM, edit the `/etc/ssh/sshd_config/` file:
+
 
 
 
