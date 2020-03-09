@@ -1,6 +1,4 @@
-# roger-skyline-1
-Initiation to system and network administration.
-## VM Part
+# VM Part
 **The properties of VM:**
 - [x] hypervisor: VirtualBox; 
 - [x] Linux OS: Debian (64-bit);
@@ -13,7 +11,7 @@ Initiation to system and network administration.
 **Installed software:**
 - [x] SSH server;
 - [x] standart system utilities.
-## Network and Security Part
+# Network and Security Part
 ### 1. Creating a non-root user to connect to the machine and work
 The user was created when we set up the VM. Enter login and password to log in.
 ### 2. Using sudo with created user to perform operation requiring special rights
