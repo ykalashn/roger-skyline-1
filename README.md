@@ -1,3 +1,5 @@
+![Hive Helsinki](https://miro.medium.com/max/3200/1*IszpKRN_x7RbKDClj6oqhQ.png)
+
 # VM Part
 **The properties of VM:**
 - [x] hypervisor: VirtualBox; 
@@ -77,7 +79,7 @@ Create a new network configuration file with any arbitrary file name eg. `enp0s3
 # cat /etc/network/interfaces.d/enp0s3
 iface enp0s3 inet static
       address 10.12.180.52
-      netmask 255.255.255.252
+      netmask 255.255.255.252       // Netmask in \30
       gateway 10.12.254.254
  ```
  Now you can see result by first `restarting the network service`, and then running command `ip a`:
@@ -92,6 +94,6 @@ iface enp0s3 inet static
 
 
 
-![Hive Helsinki](https://miro.medium.com/max/3200/1*IszpKRN_x7RbKDClj6oqhQ.png)
+
 
 
