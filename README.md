@@ -25,7 +25,7 @@ apt-get install sudo
 ```
 sudo usermod -aG sudo ykalashn
 ```
-**3. Testthe `sudo` access**
+**3. Test the `sudo` access**
 
 Switch to the newly created user:
 ```
