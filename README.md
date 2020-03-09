@@ -39,7 +39,7 @@ sudo whoami
 ```
 If the user has sudo access then the output of the `whoami` command will be 
 `root`.
-### 3. Create a static IP and a Netmask in \30
+### 3. Create a [static IP](https://linuxconfig.org/how-to-setup-a-static-ip-address-on-debian-linux) and a [Netmask in \30](https://www.aelius.com/njh/subnet_sheet.html)
 In VirtualBox go to `Settings` > `Network` > `Attached to:` and choose `Bridged Adapter`.
 
 We are about to edit some files. I prefer using `vim` editor, so let's install it:
