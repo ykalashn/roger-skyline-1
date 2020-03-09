@@ -118,20 +118,17 @@ ssh-keygen
 ```
 ssh-copy-id ykalashn@10.12.180.52 -p 45678
 ```
-To disable root SSH login, edit `/etc/ssh/sshd_config` file on your VM.
+- To disable root SSH login, edit `/etc/ssh/sshd_config` file on your VM.
 ```
 sudo vi /etc/ssh/sshd_config
 ```
-Change the line `# PermitRootLogin yes` to `PermitRootLogin no`. 
+- Change the line `#PermitRootLogin` to `PermitRootLogin no`, and change `#PasswordAuthentication` to `PasswordAuthentication no`. 
 
-Restart the SSH daemon: 
+- Restart the SSH daemon: 
 ```
 sudo service sshd restart
 ```
-- We On your VM, edit the `/etc/ssh/sshd_config/` file:
-```
-sudo vi /etc/ssh/sshd_config
-```
+
 
 
 
