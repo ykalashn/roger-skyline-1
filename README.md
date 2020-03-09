@@ -40,11 +40,9 @@ sudo whoami
 ### 3. Create a static IP and a Netmask in \30
 In VirtualBox go to `Settings` > `Network` > `Attached to:` and choose `Bridged Adapter`.
 
-We are about to edit some files. I prefer using `vim` editor, so let's install it. Also, let's install `net-tools`, so we can use `ifconfig` command.
+We are about to edit some files. I prefer using `vim` editor, so let's install it:
 ```
 sudo apt-get install vim
-sudo apt-get install net-tools
-sudo ifconfig
 ``` 
 By default you will find the following configuration within the `/etc/network/interfaces` network config file:
 ```
@@ -69,7 +67,24 @@ iface lo inet loopback
 # The primary network interface
 auto enp0s3
 ```
- 
+Go to `/etc/network/interfaces.d` and create a file `enp0s3`. 
+```
+cd interfaces.d
+sudo vim enp0s3
+```
+Create a new network configuration file with any arbitrary file name eg. `enp0s3` and include the `enp0s3` IP address configuration shown below:
+```
+# cat /etc/network/interfaces.d/enp0s3
+iface enp0s3 inet static
+      address 10.12.180.52
+      netmask 255.255.255.252
+      gateway 10.12.254.254
+ ```
+ Now you can see result by first `restarting the network service`, and then running command `ip a`:
+ ```
+ sudo service networking restart
+ ip a
+ ```
 
 
 
