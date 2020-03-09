@@ -154,9 +154,37 @@ You can check status of the firewall by entering:
 ```
 sudo ufw status
 ```
-
-
-
+### 6. Set a DOS protection on your open ports of the VM
+Install fail2ban
+```
+sudo apt-get install iptables fail2ban apache2
+```
+Copy `jail.conf` into `jail.local`:
+```
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+```
+Now we need to edit the `/etc/fail2ban/jail.conf` file, the `JAILS` part inside the file should look like this:
+```
+[sshd]
+enabled = true
+port    = ssh 
+logpath = %(sshd_log)s
+backend = %(sshd_backend)s
+maxretry = 3
+bantime = 600
+```
+After `HTTP servers`, add:
+```
+[http-get-dos]
+enabled = true
+port = http,https
+filter = http-get-dos
+logpath = %(apache_error_log)s
+maxretry = 300
+findtime = 300
+bantime = 600
+action = iptables[name=HTTP, port=http, protocol=tcp]
+```
 
 
 
