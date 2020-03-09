@@ -18,17 +18,17 @@
 The user was created when we set up the VM. Enter login and password to log in.
 ### 2. [Using `sudo` with created user](https://hostadvice.com/how-to/how-to-create-a-non-root-user-on-ubuntu-18-04-server/) to perform operation requiring special rights
 
-- Install `sudo`**
+- Install `sudo`
 ```sh
 su
 apt-get update
 apt-get install sudo
 ```
-- Add the non-root user to the `sudo` group**
+- Add the non-root user to the `sudo` group
 ```sh
 sudo usermod -aG sudo ykalashn
 ```
-#### Test the `sudo` access**
+#### Test the `sudo` access
 
 - Switch to the newly created user:
 ```sh
