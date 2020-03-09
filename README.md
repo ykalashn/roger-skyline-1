@@ -38,14 +38,14 @@ sudo whoami
 > If the user has sudo access then the output of the `whoami` command will be 
 `root`.
 ### 3. Create a static IP and a Netmask in \30
-In VirtualBox go to `Settings` > `Network` > `Attached to:` `Bridged Adapter`.
-We are about to edit some files. I prefer using `vim` editor, so let's install it.
+In VirtualBox go to `Settings` > `Network` > `Attached to:` choose `Bridged Adapter`.
+
+We are about to edit some files. I prefer using `vim` editor, so let's install it. Also, let's install `net-tools`, so we can use `ifconfig` command.
 ```
 sudo apt-get install vim
 sudo apt-get install net-tools
-
-```
-Now let's got to 
+sudo ifconfig
+``` 
 
 
 
