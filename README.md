@@ -1,6 +1,6 @@
 ![Hive Helsinki](https://miro.medium.com/max/3200/1*IszpKRN_x7RbKDClj6oqhQ.png)
 
-# VM Part
+## VM Part
 #### The properties of VM:
 - [x] hypervisor: VirtualBox; 
 - [x] Linux OS: Debian (64-bit);
@@ -13,41 +13,42 @@
 #### Installed software:
 - [x] SSH server;
 - [x] standart system utilities.
-# Network and Security Part
+## Network and Security Part
 ### 1. Creating a non-root user to connect to the machine and work
 The user was created when we set up the VM. Enter login and password to log in.
 ### 2. [Using `sudo` with created user](https://hostadvice.com/how-to/how-to-create-a-non-root-user-on-ubuntu-18-04-server/) to perform operation requiring special rights
 
-#### Install `sudo`**
+- Install `sudo`**
 ```sh
 su
 apt-get update
 apt-get install sudo
 ```
-#### Add the non-root user to the `sudo` group**
+- Add the non-root user to the `sudo` group**
 ```sh
 sudo usermod -aG sudo ykalashn
 ```
 #### Test the `sudo` access**
 
-Switch to the newly created user:
+- Switch to the newly created user:
 ```sh
 su - ykalashn
 ```
-Use the sudo command to run the whoami command:
+- Use the sudo command to run the whoami command:
 ```sh
 sudo whoami
 ```
 If the user has sudo access then the output of the `whoami` command will be 
 `root`.
 ### 3. Create a [static IP](https://linuxconfig.org/how-to-setup-a-static-ip-address-on-debian-linux) and a [Netmask in \30](https://www.aelius.com/njh/subnet_sheet.html)
-In VirtualBox go to `Settings` > `Network` > `Attached to:` and choose `Bridged Adapter`.
+- In VirtualBox go to `Settings` > `Network` > `Attached to:` and choose `Bridged Adapter`.
 
-We are about to edit some files. I prefer using `vim` editor, so let's install it:
+- We are about to edit some files. I prefer using `vim` editor, so let's install it:
 ```sh
 sudo apt-get install vim
 ``` 
-By default, you will find the following configuration within the `/etc/network/interfaces` network config file. Update the `# The primary network interface`:
+By default, you will find the following configuration within the `/etc/network/interfaces` network config file. - ---
+- Update the `# The primary network interface`:
 ```diff
 source /etc/network/interfaces.d/*
 
@@ -60,12 +61,12 @@ iface lo inet loopback
 - iface eth0 inet dhcp
 + auto enp0s3
 ```
-Go to `/etc/network/interfaces.d` and create a file `enp0s3`: 
+- Go to `/etc/network/interfaces.d` and create a file `enp0s3`: 
 ```sh
 cd interfaces.d
 sudo vim enp0s3
 ```
-Create a new network configuration file with any arbitrary file name eg. `enp0s3` and include the `enp0s3` IP address configuration shown below:
+- Create a new network configuration file with any arbitrary file name eg. `enp0s3` and include the `enp0s3` IP address configuration shown below:
 ```sh
 # cat /etc/network/interfaces.d/enp0s3
 iface enp0s3 inet static
@@ -81,40 +82,40 @@ iface enp0s3 inet static
 ### 4. Change the default port of the SSH service, SSH access has to be done with publickeys. SSH root access should not be aloved directly
 
 #### Change our default port
-Edit `/etc/ssh/sshd_config` file:
+- Edit `/etc/ssh/sshd_config` file:
 ```sh
 sudo vim /etc/ssh/sshd_config
 ```
-Update the line `# Port 22` by removing `#` and typing a new port number:
+- Update the line `# Port 22` by removing `#` and typing a new port number:
 ```diff
 - # Port 22
 + Port 45678
 ```
 > :point_up: Make sure you choose a random port, preferably higher than **1024** (the superior limit of standard well-known ports). The maximum port that can be setup for for SSH is **65535/TCP**.
 
-Save the file, and restart the **sshd service**:
+- Save the file, and restart the **sshd service**:
 ```sh
 sudo service sshd restart
 ```
-Now, try to log in with your **ssh**:
+- Now, try to log in with your **ssh**:
 ```sh
 ssh ykalashn@10.12.180.52 -p 45678
 ```
 #### Let's create `SSH publickey`.
 
-Run from your **host terminal** and then set a **passphrase**:
+- Run from your **host terminal** and then set a **passphrase**:
 ```sh
 ssh-keygen
 ```
-Copy the publickey to VM:
+- Copy the publickey to VM:
 ```sh
 ssh-copy-id ykalashn@10.12.180.52 -p 45678
 ```
-To disable root SSH login, edit `/etc/ssh/sshd_config` file on your VM.
+- To disable root SSH login, edit `/etc/ssh/sshd_config` file on your VM:
 ```sh
 sudo vi /etc/ssh/sshd_config
 ```
-Change the following lines:
+- Change the following lines:
 ```diff
 - #PermitRootLogin
 - #PubkeyAuthentication
@@ -123,26 +124,26 @@ Change the following lines:
 + PubkeyAuthentication yes
 + PasswordAuthentication no
 ```
-Restart the SSH daemon: 
+- Restart the SSH daemon: 
 ```sh
 sudo service sshd restart
 ```
 ### 5. Set the rules for [firewall](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-debian-9)
-Install and enable `UFW` (Uncomplicated Firewall):
+- Install and enable `UFW` (Uncomplicated Firewall):
 ```sh
 sudo apt-get install ufw
 sudo ufw enable
 ```
-To check the list of all services, enter:
+- To check the list of all services, enter:
 ```sh
 less /etc/services
 ```
-To set the defaults used by UFW, use these commands:
+- To set the defaults used by UFW, use these commands:
 ```sh
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 ```
-To allow `ssh`, `http`, and `https` use these commands:
+- To allow `ssh`, `http`, and `https` use these commands:
 ```sh
 sudo ufw allow 45678/tcp
 sudo ufw allow 80/tcp
@@ -153,15 +154,15 @@ You can check status of the firewall by entering:
 sudo ufw status
 ```
 ### 6. Set a DOS protection on your open ports of the VM
-Install fail2ban
+- Install fail2ban
 ```sh
 sudo apt-get install iptables fail2ban apache2
 ```
-Copy `jail.conf` into `jail.local`:
+- Copy `jail.conf` into `jail.local`:
 ```sh
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 ```
-Now we need to edit the `/etc/fail2ban/jail.conf` file, the `JAILS` part inside the file should look like this:
+- Now, edit the `/etc/fail2ban/jail.conf` file, the `JAILS` part inside the file should look like this:
 ```sh
 [sshd]
 enabled = true
@@ -171,7 +172,7 @@ backend = %(sshd_backend)s
 maxretry = 3
 bantime = 600
 ```
-After `HTTP servers`, add:
+- After `HTTP servers`, add:
 ```sh
 [http-get-dos]
 enabled = true
@@ -183,7 +184,7 @@ findtime = 300
 bantime = 600
 action = iptables[name=HTTP, port=http, protocol=tcp]
 ```
-Now we need to create a filter:
+- Create a filter:
 ```
 sudo vi /etc/fail2ban/filter.d/http-get-dos.conf
 ```
@@ -194,7 +195,7 @@ The output should look like this:
 failregex = ^<HOST> -.*"(GET|POST).*
 ignoreregex =
 ```
-Let's reload the `firewall` and restart our `fail2ban` service:
+- Let's reload the `firewall` and restart our `fail2ban` service:
 ```sh
 sudo ufw reload
 sudo service fail2ban restart
