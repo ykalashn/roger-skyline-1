@@ -96,7 +96,7 @@ Update the line `# Port 22` by removing `#` and typing a new port number:
 ```
 Port 45678
 ```
-> Make sure you choose a random port, preferably higher than 1024 (the superior limit of standard well-known ports). The maximum port that can be setup for for SSH is 65535/TCP.
+> :point_up: Make sure you choose a random port, preferably higher than 1024 (the superior limit of standard well-known ports). The maximum port that can be setup for for SSH is 65535/TCP.
 
 Save the file, and restart the sshd service:
 ```
