@@ -68,7 +68,8 @@ iface lo inet loopback
 
 # The primary network interface
 allow-hotplug enp0s3
-iface enp0s3 inet static```
+iface enp0s3 inet static
+```
 
 
 
