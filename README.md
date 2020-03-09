@@ -16,7 +16,8 @@
 # Network and Security Part
 ### 1. Creating a non-root user to connect to the machine and work
 The user was created when we set up the VM. Enter login and password to log in.
-### 2. [Using `sudo` with created user to perform operation requiring special rights](https://hostadvice.com/how-to/how-to-create-a-non-root-user-on-ubuntu-18-04-server/)
+### 2. [Using `sudo` with created user](https://hostadvice.com/how-to/how-to-create-a-non-root-user-on-ubuntu-18-04-server/) to perform operation requiring special rights
+
 **1. Install `sudo`**
 ```
 su
@@ -46,7 +47,7 @@ We are about to edit some files. I prefer using `vim` editor, so let's install i
 ```
 sudo apt-get install vim
 ``` 
-By default you will find the following configuration within the `/etc/network/interfaces` network config file:
+By default, you will find the following configuration within the `/etc/network/interfaces` network config file:
 ```
 source /etc/network/interfaces.d/*
 
@@ -69,7 +70,7 @@ iface lo inet loopback
 # The primary network interface
 auto enp0s3
 ```
-Go to `/etc/network/interfaces.d` and create a file `enp0s3`. 
+Go to `/etc/network/interfaces.d` and create a file `enp0s3`: 
 ```
 cd interfaces.d
 sudo vim enp0s3
@@ -90,49 +91,63 @@ iface enp0s3 inet static
 ### 4. Change the default port of the SSH service, SSH access has to be done with publickeys. SSH root access should not be aloved directly
 
 **Let's change our default port**
-- Edit `/etc/ssh/sshd_config` file:
+Edit `/etc/ssh/sshd_config` file:
 ```
 sudo vim /etc/ssh/sshd_config
 ```
-- Update the line `# Port 22` by removing `#` and typing a new port number:
+Update the line `# Port 22` by removing `#` and typing a new port number:
 ```
 Port 45678
 ```
 > :point_up: Make sure you choose a random port, preferably higher than **1024** (the superior limit of standard well-known ports). The maximum port that can be setup for for SSH is **65535/TCP**.
 
-- Save the file, and restart the **sshd service**:
+Save the file, and restart the **sshd service**:
 ```
 sudo service sshd restart
 ```
-- Now, try to log in with your **ssh**:
+Now, try to log in with your **ssh**:
 ```
 ssh ykalashn@10.12.180.52 -p 45678
 ```
 **Let's create `SSH publickey`.**
 
-- Run from your **host terminal** and then set a **passphrase**:
+Run from your **host terminal** and then set a **passphrase**:
 ```
 ssh-keygen
 ```
-- Copy the publickey to VM:
+Copy the publickey to VM:
 ```
 ssh-copy-id ykalashn@10.12.180.52 -p 45678
 ```
-- To disable root SSH login, edit `/etc/ssh/sshd_config` file on your VM.
+To disable root SSH login, edit `/etc/ssh/sshd_config` file on your VM.
 ```
 sudo vi /etc/ssh/sshd_config
 ```
-- Change the line `#PermitRootLogin` to `PermitRootLogin no`, and `#PasswordAuthentication` to `PasswordAuthentication no`. 
+Change the line `#PermitRootLogin` to `PermitRootLogin no`, `#PubkeyAuthentication` to `PubkeyAuthentication yes`, and `#PasswordAuthentication` to `PasswordAuthentication no`. 
 
-- Restart the SSH daemon: 
+Restart the SSH daemon: 
 ```
 sudo service sshd restart
 ```
 ### 5. Set the rules for firewall
-- Install and enable `UFW` (Uncomplicated Firewall)
+Install and enable `UFW` (Uncomplicated Firewall):
 ```
 sudo apt-get install ufw
 sudo ufw enable
+```
+To check the list of all services, enter:
+```
+less /etc/services
+```
+To allow `ssh`, `http`, and `https` use these commands:
+```
+sudo ufw allow 45678/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+```
+You can check status of the firewall by entering
+```
+sudo ufw status
 ```
 
 
