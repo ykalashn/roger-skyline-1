@@ -16,7 +16,6 @@
 ## Network and Security Part
 ### 1. Creating a non-root user to connect to the machine and work
 The user was created when we set up the VM. Enter login and password to log in.
-___
 ### 2. [Using `sudo` with created user](https://hostadvice.com/how-to/how-to-create-a-non-root-user-on-ubuntu-18-04-server/) to perform operation requiring special rights
 - Install `sudo`
 ```sh
@@ -41,7 +40,6 @@ sudo whoami
 _If the user has sudo access then the output of the `whoami` command will be 
 `root`._
 ### 3. Create a [static IP](https://linuxconfig.org/how-to-setup-a-static-ip-address-on-debian-linux) and a [Netmask in \30](https://www.aelius.com/njh/subnet_sheet.html)
----
 - In VirtualBox go to `Settings` > `Network` > `Attached to:` and choose `Bridged Adapter`.
 
 - We are about to edit some files. I prefer using `vim` editor, so let's install it:
@@ -80,7 +78,7 @@ iface enp0s3 inet static
 ```sh
  sudo service networking restart
  ip a
- ```
+```
 ### 4. Change the default port of the SSH service, SSH access has to be done with publickeys. SSH root access should not be aloved directly
 
 #### Change our default port
