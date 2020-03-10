@@ -431,6 +431,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 </IfModule>
 ```
 - Add a redirect rule to `/etc/apache2/sites-available/000-default.conf` to redirect HTTP to HTTPS:
+```diff
++ Redirect "/" "https://192.168.10.42/"
 ```
-Redirect "/" "https://192.168.10.42/"
-```
+
