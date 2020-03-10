@@ -273,8 +273,99 @@ sudo crontab -e
 @reboot sudo /home/ykalashn/up-to-date.sh
 0 4 * * 1 sudo /home/ykalashn/up-to-date.sh
 ```
+### 10. Make a script to monitor changes of the /etc/crontab file and sends an email to root, add a scheduled task
+```
+sudo touch croncheck.sh
+sudo chmod 777 croncheck.sh
+```
+- The `croncheck.sh` file should contain:
+``` sh
+#!/bin/bash
 
+sudo touch /home/ykalashn/cronchekki
+sudo chmod 777 /home/ykalashn/cronchekki
+f1="$(md5sum '/etc/crontab' | awk '{print $1}')"
+f2="$(cat '/home/ykalashn/cronchekki')"
+echo ${f1}
+echo ${f2}
 
+if [ "f1" != "f2" ] ; then
+	md5sum /etc/crontab | awk '{print $1}' > /home/ykalashn/cronchekki
+	echo "croncheck: modified" | mail -s "croncheck result" root@debian.lan
+fi
+```
+- Edit the `crontab` file by adding a new line:
+```
+0 0 * * * root /home/ykalashn/croncheck.sh
+```
+- To use command `mail`, we need to install `bsd-mailx`:
+```
+sudo apt install bsd-mailx
+```
+- To recieve emails we need to install `postfix`:
+```
+sudo apt-get install postfix
 
+```
+- In `postfix` setup choose the following:
+```sh
+General type of mail configuration: Local only
+System mail name: debian.lan
+Root and postmaster mail recipient: root@localhost
+Other destinations to accept mail for: debian.lan, localhost.lan, localhost
+Force synchronous updates on mail queue? No
+Local networks: # press enter
+Mailbox size limit (bytes): 0
+Local address extension character: # press enter
+Internet protocols to use: all
+```
+- If you want to change these settings after the initial install you can with: 
+```sh
+sudo dpkg-reconfigure postfix
+```
+- Now to configure where email notifications are sent to:
+```sh
+sudo vim /etc/aliases
+```
+- Enter:
+```sh
+root: root
+```
+- The new alias need to be loaded into the hashed alias database (/etc/aliases.db) with the following command:
+```sh
+sudo newaliases
+```
+Then change the home mailbox directory:
+```
+sudo postconf -e "home_mailbox = mail/"
+```
+Restart the postfix service:
+```
+sudo service postfix restart
+```
+Install the CLI (non-graphical) mail client mutt:
+```
+sudo apt install mutt
+```
+Create a config file ".muttrc" for mutt in the /root/ directory and edit it:
+```
+set mbox_type=Maildir
+set folder="/root/mail"
+set mask="!^\\.[^.]"
+set mbox="/root/mail"
+set record="+.Sent"
+set postponed="+.Drafts"
+set spoolfile="/root/mail"
+```
+Start mutt and exit:
+```
+mutt
 
+# press 'q' to exit
+```
+- Finally, send an email to the root user testing our setup is working:
+```
+echo "Bonjour, une baguette s’il vous plaît!" | mail -s "Bonjour from `hostname`" root
+```
+_Login as a root user and run command `mutt`. The mail should now be there._
 
