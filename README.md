@@ -174,7 +174,7 @@ maxretry = 3
 bantime = 600
 ```
 - After `HTTP servers`, add:
-```http
+```sh
 [http-get-dos]
 enabled = true
 port = http,https
@@ -248,7 +248,7 @@ sudo /etc/init.d/portsentry start
 ```
 sudo systemctl list-unit-files --type=service | grep enabled
 ```
-- I want to disable `keyboard-setup.service` and `console-setup.service`, so I enter:
+- To disable `keyboard-setup.service` and `console-setup.service`, enter:
 ```
 sudo systemctl disable keyboard-setup.service
 sudo systemctl disable console-setup.service
