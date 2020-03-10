@@ -119,10 +119,10 @@ sudo vi /etc/ssh/sshd_config
 - Change the following lines:
 ```diff
 - #PermitRootLogin
-- #PubkeyAuthentication
-- #PasswordAuthentication
 + PermitRootLogin
+- #PubkeyAuthentication
 + PubkeyAuthentication yes
+- #PasswordAuthentication
 + PasswordAuthentication no
 ```
 - Restart the SSH daemon: 
@@ -174,7 +174,7 @@ maxretry = 3
 bantime = 600
 ```
 - After `HTTP servers`, add:
-```sh
+```http
 [http-get-dos]
 enabled = true
 port = http,https
@@ -205,13 +205,53 @@ _Now we can check the status of `fail2ban`:_
 ```sh
 sudo fail2ban-client status
 ```
+### 7. Set a [protection against scans](https://en-wiki.ikoula.com/en/To_protect_against_the_scan_of_ports_with_portsentry) on the VM's open ports
+- First, install `portsentry`:
+```sh
+sudo apt-get install portsentry
+```
+- Edit the `/etc/default/portsentry` file:
+```diff
+- TCP_MODE="tcp"
++ TCP_MODE="atcp"
+- UDP_MODE="udp"
++ UDP_MODE="audp"
+```
+- Modify the `/etc/portsentry/portsentry.conf` file:
+```diff
+##################
+# Ignore Options #
+##################
+# 0 = Do not block UDP/TCP scans.
+# 1 = Block UDP/TCP scans.
+# 2 = Run external command only (KILL_RUN_CMD)
 
-
-
-
-
-
-
-
-
+- BLOCK_UDP="0"
++ BLOCK_UDP="1"
+- BLOCK_TCP="0"
++ BLOCK_TCP="1"
+```
+- In the same file, comment all the current `KILL_ROUTE` commands out and **uncomment the following one**:
+```sh
+KILL_ROUTE="/sbin/iptables -I INPUT -s $TARGET$ -j DROP"
+```
+- Also, comment this command out:
+```sh
+KILL_HOSTS_DENY="ALL: $TARGET$ : DENY
+```
+- Start the `portsentry` service and it will begin blocking the `port scans`:
+```sh
+sudo /etc/init.d/portsentry start
+```
+### 8. Stop the services you don't need
+- To check all the **enabled services**, enter:
+```
+sudo systemctl list-unit-files --type=service | grep enabled
+```
+- I want to disable `keyboard-setup.service` and `console-setup.service`, so I enter:
+```
+sudo systemctl disable keyboard-setup.service
+sudo systemctl disable console-setup.service
+```
+### 9. Script that updates all the sources of package and logs in /var/log/update_script.log, scheduled task every week at 4 am and every time at reboot
 
