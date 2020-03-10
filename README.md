@@ -243,14 +243,16 @@ KILL_HOSTS_DENY="ALL: $TARGET$ : DENY
 ```sh
 sudo /etc/init.d/portsentry start
 ```
-### 8. Stop the services you don't need
+### 8. [Stop the services](https://www.linux.com/tutorials/cleaning-your-linux-startup-process/) you don't need
 - To check all the **enabled services**, enter:
 ```
 sudo systemctl list-unit-files --type=service | grep enabled
 ```
 - To disable `keyboard-setup.service` and `console-setup.service`, enter:
 ```
+sudo systemctl stop keyboard-setup.service
 sudo systemctl disable keyboard-setup.service
+sudo systemctl stop console-setup.service
 sudo systemctl disable console-setup.service
 ```
 ### 9. Script that updates all the sources of package and logs in /var/log/update_script.log, scheduled task every week at 4 am and every time at reboot
@@ -273,7 +275,7 @@ sudo crontab -e
 @reboot sudo /home/ykalashn/up-to-date.sh
 0 4 * * 1 sudo /home/ykalashn/up-to-date.sh
 ```
-### 10. Make a script to monitor changes of the /etc/crontab file and sends an email to root, add a scheduled task
+### 10. Make a script to monitor changes of the /etc/crontab file and [sends an email](https://www.cmsimike.com/blog/2011/10/30/setting-up-local-mail-delivery-on-ubuntu-with-postfix-and-mutt/) to root, add a scheduled task
 ```
 sudo touch croncheck.sh
 sudo chmod 777 croncheck.sh
@@ -339,15 +341,15 @@ Then change the home mailbox directory:
 ```
 sudo postconf -e "home_mailbox = mail/"
 ```
-Restart the postfix service:
+Restart the `postfix` service:
 ```
 sudo service postfix restart
 ```
-Install the CLI (non-graphical) mail client mutt:
+Install the non-graphical mail client `mutt`:
 ```
 sudo apt install mutt
 ```
-Create a config file ".muttrc" for mutt in the /root/ directory and edit it:
+Create a file `.muttrc` for `mutt` in the `/root/` directory (`su` to access) and edit it:
 ```
 set mbox_type=Maildir
 set folder="/root/mail"
@@ -357,7 +359,7 @@ set record="+.Sent"
 set postponed="+.Drafts"
 set spoolfile="/root/mail"
 ```
-Start mutt and exit:
+Start `mutt`:
 ```
 mutt
 
@@ -369,3 +371,5 @@ echo "Bonjour, une baguette s’il vous plaît!" | mail -s "Bonjour from `hostna
 ```
 _Login as a root user and run command `mutt`. The mail should now be there._
 
+## Web Part
+![Web Part](https://i.ibb.co/xDHxYtG/Screen-Shot-2020-03-10-at-12-21-31-PM.png)
