@@ -71,7 +71,7 @@ sudo vim enp0s3
 ```sh
 # cat /etc/network/interfaces.d/enp0s3
 iface enp0s3 inet static
-      address 10.12.180.52
+      address 10.12.180.62
       netmask 255.255.255.252       # Netmask in \30
       gateway 10.12.254.254
  ```
@@ -100,7 +100,7 @@ sudo service sshd restart
 ```
 - Now, try to log in with your **ssh**:
 ```sh
-ssh ykalashn@10.12.180.52 -p 45678
+ssh ykalashn@10.12.180.62 -p 45678
 ```
 #### Let's create `SSH publickey`.
 
@@ -110,7 +110,7 @@ ssh-keygen
 ```
 - Copy the publickey to VM:
 ```sh
-ssh-copy-id ykalashn@10.12.180.52 -p 45678
+ssh-copy-id ykalashn@10.12.180.62 -p 45678
 ```
 - To disable root SSH login, edit `/etc/ssh/sshd_config` file on your VM:
 ```sh
@@ -372,3 +372,65 @@ _Login as a root user and run command `mutt`. The mail should now be there._
 
 ## Web Part
 ![Web Part](https://i.ibb.co/xDHxYtG/Screen-Shot-2020-03-10-at-12-21-31-PM.png)
+
+- Generate [`SSL self-signed key` and `certificate`](https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04):
+```
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+```
+Here's an example:
+```
+Country name: FI
+State or Province Name:
+Locality Name: Helsinki
+Organization Name: Hive Helsinki
+Organizational Unit Name:
+Common Name: 10.12.180.62 (VM IP address)
+Email Address: root@debian.lan
+```
+- Create the file `/etc/apache2/conf-available/ssl-params.conf` and edit it:
+```
+SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+SSLProtocol All -SSLv2 -SSLv3
+SSLHonorCipherOrder On
+
+Header always set X-Frame-Options DENY
+Header always set X-Content-Type-Options nosniff
+
+SSLCompression off
+SSLSessionTickets Off
+SSLUseStapling on
+SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
+```
+- Edit the `/etc/apache2/sites-available/default-ssl.conf` file:
+```diff
+<IfModule mod_ssl.c>
+	<VirtualHost _default_:443>
+-		ServerAdmin webmaster@localhost
++ 		ServerAdmin root@localhost
++		ServerName 10.12.180.62
+		
+		DocumentRoot /var/www/html
+		
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+		
+		SSLEngine on
+		
+-		SSLCertificateFile	/etc/ssl/certs/ssl-cert-snakeoil.pem
++ 		SSLCertificateFile	/etc/ssl/certs/apache-selfsigned.crt
+-		SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
++		SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+		
+		<FilesMatch "\.(cgi|shtml|phtml|php)$">
+				SSLOptions +StdEnvVars
+		</FilesMatch>
+		<Directory /usr/lib/cgi-bin>
+				SSLOptions +StdEnvVars
+		</Directory>
+	</VirtualHost>
+</IfModule>
+```
+- Add a redirect rule to `/etc/apache2/sites-available/000-default.conf` to redirect HTTP to HTTPS:
+```
+Redirect "/" "https://192.168.10.42/"
+```
