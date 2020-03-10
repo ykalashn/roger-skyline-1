@@ -254,4 +254,27 @@ sudo systemctl disable keyboard-setup.service
 sudo systemctl disable console-setup.service
 ```
 ### 9. Script that updates all the sources of package and logs in /var/log/update_script.log, scheduled task every week at 4 am and every time at reboot
+- Create a file and give it exectutable rights:
+```sh
+sudo touch up-to-date.sh
+sudo chmod 777 up-to-date.sh
+```
+- Open the `up-to-date.sh` file enter the commands which will update the sources of package and the packages: 
+```sh
+sudo apt-get update -y >> /var/log/update_script.log
+sudo apt-get upgrade -y >> /var/log/update_script.log
+```
+- Now, let's open `crontab` file..
+```
+sudo crontab -e
+```
+.. and add the scheduled tasks:
+```
+@reboot sudo /home/ykalashn/up-to-date.sh
+0 4 * * 1 sudo /home/ykalashn/up-to-date.sh
+```
+
+
+
+
 
