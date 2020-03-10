@@ -267,21 +267,21 @@ sudo apt-get update -y >> /var/log/update_script.log
 sudo apt-get upgrade -y >> /var/log/update_script.log
 ```
 - Now, let's open `crontab` file..
-```
+```sh
 sudo crontab -e
 ```
 .. and add the scheduled tasks:
-```
+```sh
 @reboot sudo /home/ykalashn/up-to-date.sh
 0 4 * * 1 sudo /home/ykalashn/up-to-date.sh
 ```
 ### 10. Make a script to monitor changes of the /etc/crontab file and [sends an email](https://www.cmsimike.com/blog/2011/10/30/setting-up-local-mail-delivery-on-ubuntu-with-postfix-and-mutt/) to root, add a scheduled task
-```
+```sh
 sudo touch croncheck.sh
 sudo chmod 777 croncheck.sh
 ```
 - The `croncheck.sh` file should contain:
-``` sh
+```sh
 #!/bin/bash
 
 sudo touch /home/ykalashn/cronchekki
@@ -297,17 +297,16 @@ if [ "f1" != "f2" ] ; then
 fi
 ```
 - Edit the `crontab` file by adding a new line:
-```
+```sh
 0 0 * * * root /home/ykalashn/croncheck.sh
 ```
 - To use command `mail`, we need to install `bsd-mailx`:
-```
+```sh
 sudo apt install bsd-mailx
 ```
 - To recieve emails we need to install `postfix`:
-```
+```sh
 sudo apt-get install postfix
-
 ```
 - In `postfix` setup choose the following:
 ```sh
@@ -342,15 +341,15 @@ Then change the home mailbox directory:
 sudo postconf -e "home_mailbox = mail/"
 ```
 Restart the `postfix` service:
-```
+```sh
 sudo service postfix restart
 ```
 Install the non-graphical mail client `mutt`:
-```
+```sh
 sudo apt install mutt
 ```
 Create a file `.muttrc` for `mutt` in the `/root/` directory (`su` to access) and edit it:
-```
+```sh
 set mbox_type=Maildir
 set folder="/root/mail"
 set mask="!^\\.[^.]"
@@ -360,13 +359,13 @@ set postponed="+.Drafts"
 set spoolfile="/root/mail"
 ```
 Start `mutt`:
-```
+```sh
 mutt
 
 # press 'q' to exit
 ```
 - Finally, send an email to the root user testing our setup is working:
-```
+```sh
 echo "Bonjour, une baguette s’il vous plaît!" | mail -s "Bonjour from `hostname`" root
 ```
 _Login as a root user and run command `mutt`. The mail should now be there._
