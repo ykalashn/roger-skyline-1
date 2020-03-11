@@ -434,5 +434,12 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 + Redirect "/" "https://10.12.180.62/"
 ```
 - **Now create your own `index.html` and add it to `/var/www/html/` repository. You can check mine** [**here**](https://github.com/ykalashn/roger-skyline-1/tree/master/html).
-
+- **Enable the changes and restart the `apache` service:**
+```
+sudo a2enmod ssl
+sudo a2enmod headers
+sudo a2ensite default-ssl
+sudo a2enconf ssl-params
+sudo systemctl restart apache2
+```
 > :point_up: The SSL server is tested by entering `https://10.12.180.62` in a host browser. The expected result is a **"Your connection is not private"** error page. Continue by selecting `Advanced > Proceed to 10.12.180.62`.
