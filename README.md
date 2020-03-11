@@ -433,5 +433,5 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 ```diff
 + Redirect "/" "https://10.12.180.62/"
 ```
-- Now create your own `index.html` and add it to `/var/www/html/` repository. You can check mine [here](https://github.com/ykalashn/roger-skyline-1/tree/master/html).
+- Now create your own `index.html` and add it to `/var/www/html/` repository. You can check mine [**here**](https://github.com/ykalashn/roger-skyline-1/tree/master/html).
 
