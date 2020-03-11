@@ -138,7 +138,7 @@ sudo ufw enable
 ```sh
 less /etc/services
 ```
-- **To set the defaults used by UFW, use these commands:88
+- **To set the defaults used by UFW, use these commands:**
 ```sh
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
@@ -188,7 +188,7 @@ action = iptables[name=HTTP, port=http, protocol=tcp]
 ```
 sudo vi /etc/fail2ban/filter.d/http-get-dos.conf
 ```
-:mag_right: **The output should look like this:**
+- **The output should look like this:**
 ```sh
 # cat /etc/fail2ban/filter.d/http-get-dos.conf
 [Definition]
