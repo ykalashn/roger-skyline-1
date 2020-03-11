@@ -435,3 +435,4 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 ```
 - **Now create your own `index.html` and add it to `/var/www/html/` repository. You can check mine** [**here**](https://github.com/ykalashn/roger-skyline-1/tree/master/html).
 
+> The SSL server is tested by entering `https://10.12.180.62` in a host browser. The expected result is a **"Your connection is not private"** error page. Continue by selecting `Advanced > Proceed to...`
